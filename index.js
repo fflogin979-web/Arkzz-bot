@@ -4,7 +4,7 @@ const axios = require("axios");
 const app = express();
 app.use(express.json());
 
-const TOKEN = "ISI_TOKEN_FONNTE_KAMU";
+const TOKEN = "ufGaGXDPo2f5Uft4BF6e";
 
 // 🔥 ROOT
 app.get("/", (req, res) => {
