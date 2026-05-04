@@ -4,26 +4,42 @@ const axios = require("axios");
 const app = express();
 app.use(express.json());
 
-const TOKEN = "ufGaGXDPo2f5Uft4BF6e";
+const TOKEN = "ISI_TOKEN_FONNTE_KAMU";
 
-// 🔥 ROOT
+// 🔥 ROOT (buat test Railway)
 app.get("/", (req, res) => {
   res.send("ARKZZ BOT ACTIVE 🚀");
 });
 
 // 🔥 WEBHOOK
 app.post("/webhook", async (req, res) => {
-  console.log("DATA MASUK:", req.body);
+  console.log("DATA MASUK:", JSON.stringify(req.body, null, 2));
 
-  const message = req.body.data?.message?.toLowerCase();
-  const sender = req.body.data?.sender;
+  // 🔥 SUPPORT SEMUA FORMAT FONNTE
+  const messageRaw =
+    req.body.data?.message ||
+    req.body.message ||
+    "";
 
-  if (!message) return res.send("OK");
+  const sender =
+    req.body.data?.sender ||
+    req.body.sender ||
+    "";
+
+  const message = messageRaw.toLowerCase();
+
+  console.log("MESSAGE:", message);
+  console.log("SENDER:", sender);
+
+  if (!message || !sender) {
+    console.log("❌ Message atau sender kosong");
+    return res.send("OK");
+  }
 
   let reply = `Halo kak 👋
 Selamat datang di *ARKZZ OFFICIAL STORE* 👑
 
-Ketik *menu* untuk melihat produk ya 🔥`;
+Ketik *menu* untuk melihat produk 🔥`;
 
   // 🔥 MENU
   if (message === "menu") {
@@ -42,7 +58,7 @@ Ketik angka ya 👇`;
   else if (message === "1") {
     reply = `🎮 *ARKZZ VIP BOOSTER V2*
 
-⚡ Module optimasi gaming premium
+⚡ Optimasi gaming premium
 🔥 Anti lag + FPS stabil
 🧠 AI Smart Optimization
 📡 Ping stabil
@@ -50,81 +66,77 @@ Ketik angka ya 👇`;
 ❄️ Anti overheat
 
 ✔️ Support Android 10–14
-✔️ Bisa tanpa root (basic)
+✔️ Non-root bisa
 
-💸 Minat? ketik *buy booster*`;
+💸 Ketik *buy booster*`;
   }
 
   // 🔥 FFH4X
   else if (message === "2") {
     reply = `🎯 *FFH4X MODULE*
 
-🔥 Aim assist lebih stabil
+🔥 Aim lebih stabil
 ⚡ Sensitivitas meningkat
 🎮 Gameplay lebih smooth
 💀 Lebih mudah headshot
 
-⚠️ Gunakan dengan bijak
-
-💸 Minat? ketik *buy ffh4x*`;
+💸 Ketik *buy ffh4x*`;
   }
 
-  // 🔥 JOKI ROBLOX
+  // 🔥 JOKI
   else if (message === "3") {
     reply = `🤖 *JOKI ROBLOX*
 
 🔥 Jasa joki profesional
-⚡ Cepat & terpercaya
-🎮 Cocok untuk semua game Roblox
+⚡ Cepat & aman
+👤 Admin: Raps
 
-👤 Admin Joki: Rapi / Raps
-
-💬 Order? ketik *joki*`;
+💬 Ketik *joki* untuk order`;
   }
 
-  // 🔥 AKUN ROBLOX
+  // 🔥 AKUN
   else if (message === "4") {
     reply = `🛒 *AKUN ROBLOX*
 
 🔥 Banyak pilihan akun
-💎 Level tinggi / item rare
+💎 Item rare tersedia
 ⚡ Ready stok
 
-💬 Minat? ketik *akun*`;
+💬 Ketik *akun*`;
   }
 
   // 🔥 ADMIN
   else if (message === "5") {
     reply = `📞 *KONTAK ADMIN*
 
-👑 Owner: Arkzz
-👉 https://wa.me/6285813226412
+👑 Owner (Arkzz):
+https://wa.me/6285813226412
 
-🤖 Admin Joki: Raps
-👉 https://wa.me/6285804203945`;
+🤖 Admin Joki (Raps):
+https://wa.me/6285804203945`;
   }
 
   // 🔥 BUY BOOSTER
   else if (message === "buy booster") {
-    reply = `🔥 Order ARKZZ VIP BOOSTER V2
+    reply = `🔥 Order ARKZZ BOOSTER
 
-Klik link di bawah untuk order 👇
+Klik:
 https://wa.me/6285813226412?text=Halo%20Admin%20Saya%20mau%20buy%20ARKZZ%20VIP%20BOOSTER%20V2`;
   }
 
   // 🔥 BUY FFH4X
   else if (message === "buy ffh4x") {
-    reply = `🔥 Order FFH4X MODULE
+    reply = `🔥 Order FFH4X
 
-Klik link di bawah 👇
-https://wa.me/6285813226412?text=Halo%20Admin%20Saya%20mau%20buy%20FFH4X%20MODULE`;
+Klik:
+https://wa.me/6285813226412?text=Halo%20Admin%20Saya%20mau%20buy%20FFH4X`;
   }
 
   // 🔥 JOKI
   else if (message === "joki") {
     reply = `🤖 Order Joki Roblox
 
-Hubungi admin joki 👇
+Klik:
 https://wa.me/6285804203945?text=Halo%20Saya%20mau%20joki%20Roblox`;
   }
 
@@ -132,7 +144,7 @@ https://wa.me/6285804203945?text=Halo%20Saya%20mau%20joki%20Roblox`;
   else if (message === "akun") {
     reply = `🛒 Beli Akun Roblox
 
-Hubungi admin 👇
+Klik:
 https://wa.me/6285813226412?text=Halo%20Saya%20mau%20beli%20akun%20Roblox`;
   }
 
@@ -140,7 +152,7 @@ https://wa.me/6285813226412?text=Halo%20Saya%20mau%20beli%20akun%20Roblox`;
   else {
     reply = `❓ Perintah tidak dikenali
 
-Ketik *menu* untuk melihat produk ya 👇`;
+Ketik *menu* ya 👇`;
   }
 
   // 🔥 KIRIM KE FONNTE
@@ -158,9 +170,9 @@ Ketik *menu* untuk melihat produk ya 👇`;
       }
     );
 
-    console.log("RESPON FONNTE:", response.data);
+    console.log("✅ RESPON FONNTE:", response.data);
   } catch (err) {
-    console.log("ERROR KIRIM:", err.response?.data || err.message);
+    console.log("❌ ERROR FONNTE:", err.response?.data || err.message);
   }
 
   res.send("OK");
